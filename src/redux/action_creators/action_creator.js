@@ -1,4 +1,5 @@
 export const setUser = (user) => {
+    debugger
     return {
         type:"set_user",
         payload:user,
