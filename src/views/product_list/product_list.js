@@ -3,6 +3,7 @@ import './product_list.css'
 import Header from "../../shared/header/header";
 import axios from 'axios';
 import Product from './components/product/product'
+import httpRequest  from '../../shared/services/http_request'
  class ProductList extends Component {
      state ={
          products: []
@@ -10,17 +11,11 @@ import Product from './components/product/product'
     // http://localhost:8065/api/products
 
     componentDidMount(){
-        axios.get('/api/products')
-        .then(({data})=>{
-            if(data.success){
+        httpRequest.get('/api/products', this.props)
+        .then((data)=>{
                 this.setState({
                     products:data.products
                 })
-            } else if(!data.isLoggedIn){
-                this.props.history.push('/')
-            } else{
-                alert('Something blew up!')
-            }
         })
     }
     render() {

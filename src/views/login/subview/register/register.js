@@ -16,7 +16,6 @@ export default class register extends Component {
     }
 
     register = () => {
-        debugger
         const registerObj = {
             email: this.state.email,
             password: this.state.password,

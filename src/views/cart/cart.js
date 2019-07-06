@@ -5,31 +5,19 @@ import { connect } from 'react-redux';
 import * as Actions from '../../redux/action_creators/action_creator';
 import axios from 'axios';
 import CartItem from './components/cart_item/cart_item';
-
+import httpRequest  from '../../shared/services/http_request'
 class Cart extends Component {
 
 	componentDidMount(){
-		axios.get('/api/cart')
-		.then(({data})=>{
-			if (data.success) {
-				this.props.setCart(data.cartItems);
-			} else if (!data.isLoggedIn) {
-				this.props.history.push('/');
-			} else {
-				alert('something blew up');
-			}
+		httpRequest.get('/api/cart', this.props)
+		.then((data)=>{
+			this.props.setCart(data.cartItems);
 		})
 	}
 	removeFromCart = (id) => {
-		axios.delete(`/api/cart/${id}`)
-		.then(({data})=>{
-			if (data.success) {
+		httpRequest.delete(`/api/cart/${id}`, this.props)
+		.then((data)=>{
 				this.props.setCart(data.cartItems);
-			} else if (!data.isLoggedIn) {
-				this.props.history.push('/');
-			} else {
-				alert('something blew up');
-			}
 		})
 	}
 

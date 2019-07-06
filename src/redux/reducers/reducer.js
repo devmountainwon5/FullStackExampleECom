@@ -1,7 +1,6 @@
 import {combineReducers} from 'redux'
 
 const user = (state= {}, action) => {
-    debugger
     switch(action.type){
         case 'set_user':
             return action.payload;

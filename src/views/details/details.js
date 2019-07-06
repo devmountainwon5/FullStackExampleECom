@@ -3,40 +3,27 @@ import axios from 'axios';
 import './details.css';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/action_creators/action_creator'
-
+import httpRequest  from '../../shared/services/http_request'
 class Details extends Component {
 	state = {
 		product: {}
 	};
 	// http://localhost:8065/api/products/2
 	componentDidMount() {
-		axios.get(`/api/products/${this.props.match.params.id}`).then(({ data }) => {
-			if (data.success) {
-				this.setState({
-					product: data.product
-				});
-			} else if (!data.isLoggedIn) {
-				this.props.history.push('/');
-			} else {
-				alert('something blew up');
-			}
+		httpRequest.get(`/api/products/${this.props.match.params.id}`, this.props)
+		.then((data) => {
+			this.setState({
+				product: data.product
+			})
 		});
 	}
 
 	addToCart = () => {
-		debugger
 		const product = this.state.product;
-		axios.post('/api/cart', { product })
-			.then(({ data }) => {
-				debugger
-				if (data.success) {
-					this.props.setCart(data.cartItems);
-					this.props.history.push('/cart');
-				} else if (!data.isLoggedIn) {
-					this.props.history.push('/');
-				} else {
-					alert('something blew up');
-				}
+		httpRequest.post('/api/cart',this.props, { product })
+			.then((data) => {
+				this.props.setCart(data);
+				this.props.history.push('/cart');
 			});
 	};
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/action_creators/action_creator';
 import Register from './subview/register/register';
+import httpRequest  from '../../shared/services/http_request'
 
 class Login extends Component {
 	state = {
@@ -12,18 +13,14 @@ class Login extends Component {
 		showRegister: false
 	};
 	login = () => {
-		debugger;
 		const loginObj = {
 			email: this.state.email,
 			password: this.state.password
 		};
-		axios.post('/api/login', loginObj).then(({ data }) => {
-			if (data.success) {
+		httpRequest.post('/api/login', this.props, loginObj).then((data ) => {
+			debugger
 				this.props.setUser(data.user);
 				this.props.history.push('/products');
-			} else {
-				alert('Wrong credentails');
-			}
 		});
 	};
 	showRegister = () => {
@@ -32,15 +29,9 @@ class Login extends Component {
 		});
 	};
 	register = registerObj => {
-		debugger;
-		axios.post('/api/register', registerObj).then(({ data }) => {
-			debugger;
-			if (data.success) {
+		httpRequest.post('/api/register', this.props, registerObj).then((data ) => {
 				this.props.setUser(data.user);
 				this.props.history.push('/products');
-			} else {
-				alert('Email already exists login.');
-			}
 		});
 	};
 
